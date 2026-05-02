@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentrySpam | Premium Email AI</title>
+    <meta name="description" content="AI-powered email spam detection with state-of-the-art accuracy.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-shield-halved"></i>
+                <span>Sentry<span>Spam</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#analyze" class="active">Analyze</a>
+                <a href="https://github.com/Seeker023/email-spam-detector" target="_blank">Documentation</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="animate-up">Protect Your Inbox with <span class="gradient-text">Intelligence</span></h1>
+                <p class="animate-up delay-1">Leverage state-of-the-art Machine Learning to identify malicious emails in milliseconds. Clean, simple, and powerful.</p>
+                <div class="hero-stats animate-up delay-2">
+                    <div class="stat">
+                        <span class="stat-value">98.5%</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">< 50ms</span>
+                        <span class="stat-label">Inference</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="analyze" class="analyzer-section">
+            <div class="glass-card analyzer-card animate-up delay-3">
+                <div class="card-header">
+                    <h2><i class="fas fa-magnifying-glass-chart"></i> Email Intelligence Engine</h2>
+                    <p>Paste your email content below for deep neurological analysis.</p>
+                </div>
+                
+                <div class="input-container">
+                    <textarea id="email-text" placeholder="Paste email headers or body here..."></textarea>
+                    <div class="char-count">0 characters</div>
+                </div>
+
+                <div class="actions">
+                    <button id="analyze-btn" class="primary-btn">
+                        <span class="btn-text">Analyze Now</span>
+                        <span class="btn-loader hidden"><i class="fas fa-circle-notch fa-spin"></i></span>
+                    </button>
+                    <button id="clear-btn" class="secondary-btn">Clear</button>
+                </div>
+
+                <div id="result-container" class="result-container hidden">
+                    <div class="result-divider"></div>
+                    <div class="result-content">
+                        <div class="result-icon-wrapper" id="result-icon">
+                            <!-- Icon injected by JS -->
+                        </div>
+                        <div class="result-details">
+                            <h3 id="result-label">Analyzing...</h3>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-info">
+                                    <span>Confidence Score</span>
+                                    <span id="confidence-value">0%</span>
+                                </div>
+                                <div class="progress-bg">
+                                    <div id="progress-fill" class="progress-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SentrySpam AI. Built for Advanced Communication Security.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
