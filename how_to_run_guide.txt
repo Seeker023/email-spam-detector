@@ -1,0 +1,64 @@
+========================================================================
+ GUIDE: HOW TO RUN THIS SPAM DETECTOR ON THIS OR ANOTHER DEVICE
+========================================================================
+
+This guide explains how to operate the Email Spam Detection model on your current computer, and how to transfer it to a completely new device (like a friend's laptop or a college lab computer).
+
+------------------------------------------------------
+ SCENARIO 1: RUNNING THE MODEL ON THIS DEVICE
+------------------------------------------------------
+Since the project is already set up on this computer, running it is very simple.
+
+Step 1: Open Terminal / Command Prompt
+- Open PowerShell, CMD, or the Terminal in VS Code.
+- Navigate to the project folder if you aren't already there:
+  `cd C:\Users\ombhu\OneDrive\Desktop\Muskan\email_spam_detector`
+
+Step 2: Launch the Web Interface (Gradio)
+- Simply run the following command:
+  `python app.py`
+- Wait a few seconds. The terminal will output a local URL (usually `http://127.0.0.1:7860`).
+- CTRL+Click that link (or copy-paste it into your Chrome/Edge browser) to open the Spam Detector.
+- Paste any email text into the box and click "Analyze" to see if it's Spam or Ham!
+
+(Note: If you ever want to re-train the models from scratch and regenerate the graphs, just run `python src/train.py`)
+
+
+------------------------------------------------------
+ SCENARIO 2: TRANSFERRING & RUNNING ON ANOTHER DEVICE
+------------------------------------------------------
+If you need to show this project on a different laptop for a presentation or submission, follow these exact steps to ensure it works perfectly.
+
+Step 1: Copy the Project
+- On this computer, right-click the `email_spam_detector` folder and select "Send to -> Compressed (zipped) folder".
+- Copy that `.zip` file to a Pen Drive, Google Drive, or email it to yourself.
+- On the NEW computer, download the `.zip` file and Extract it (e.g., to the Desktop).
+
+Step 2: Install Python (If not installed)
+- The new computer MUST have Python installed. 
+- Go to `python.org/downloads`, download the latest version, and install it.
+- **CRITICAL:** During installation, make sure you check the box that says "Add Python to PATH" before clicking Install!
+
+Step 3: Open Terminal on the New Computer
+- Open Command Prompt or PowerShell on the new computer.
+- Navigate to the extracted folder:
+  `cd Desktop\email_spam_detector` (or wherever you extracted it)
+
+Step 4: Install Required Libraries
+- The new computer doesn't have the Machine Learning libraries yet. Install them by running:
+  `pip install -r requirements.txt`
+- Wait for all the packages (pandas, scikit-learn, nltk, gradio, etc.) to download and install.
+
+Step 5: Download NLTK Data (Important!)
+- Sometimes NLTK needs its language dictionaries downloaded on a fresh PC. Open python in the terminal by typing `python` and pressing Enter.
+- Type these three lines one by one:
+  `import nltk`
+  `nltk.download('stopwords')`
+  `nltk.download('wordnet')`
+- Type `exit()` to leave Python.
+
+Step 6: Run the App!
+- Now the new computer is fully set up. Run:
+  `python app.py`
+- Open the local link (`http://127.0.0.1:7860`) in the browser. 
+- Done! The model is now working on the new device.

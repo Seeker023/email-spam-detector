@@ -1,0 +1,27 @@
+# The Email Spam Detection project is fully set up in the email_spam_detector/ directory!
+
+# Here is what was created:
+
+# README.md & requirements.txt: For setup and environment instructions.
+# src/download_data.py: A fallback script to automatically download the SpamAssassin dataset and create data/emails.csv.
+# src/preprocess.py: Text cleaning logic with nltk (removes stopwords, lemmatizes, removes HTML, URLs, etc.).
+# src/train.py: Main script to vectorise the text (TF-IDF), train 4 models (Naive Bayes, Logistic Regression, Linear SVM, Random Forest), print comparison metrics, plot all the requested graphs, and save the best model + vectorizer to the models/ directory using joblib.
+# src/predict.py: Model loading and inference script.
+# app.py: The complete Gradio web UI.
+# notebook.ipynb: The Jupyter Notebook providing a walkthrough and EDA.
+# How to use it:
+# Install Requirements: Open your terminal and navigate to the project directory, then run:
+# bash
+# cd email_spam_detector
+# pip install -r requirements.txt
+# Download the Data:
+# bash
+# python src/download_data.py
+# Train the Models and generate the plots:
+# bash
+# python src/train.py
+# (This will create plots in the plots/ folder and models in models/)
+# Launch the UI:
+# bash
+# python app.py
+# Feel free to run the commands directly in your terminal, or let me know if you would like me to trigger any of them for you!
