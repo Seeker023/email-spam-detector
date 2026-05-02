@@ -44,5 +44,13 @@ with gr.Blocks(title="Email Spam Detector", theme=gr.themes.Soft()) as demo:
         inputs=input_text
     )
 
+import os
+
 if __name__ == "__main__":
-    demo.launch(share=False)
+    # Get port from environment variable for deployment (default to 7860)
+    port = int(os.environ.get("PORT", 7860))
+    demo.launch(
+        server_name="0.0.0.0", 
+        server_port=port, 
+        share=False
+    )
