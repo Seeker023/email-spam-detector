@@ -1,22 +1,21 @@
 import joblib
 import os
+import math
 from pathlib import Path
+from src.preprocess import clean_text
 
-def load_pipeline():
-    """
-    Loads the trained vectorizer and best model from disk.
-    """
-    base_dir = Path(__file__).parent.parent
-    model_path = base_dir / "models" / "best_model.joblib"
-    vectorizer_path = base_dir / "models" / "vectorizer.joblib"
-    
-    if not model_path.exists() or not vectorizer_path.exists():
-        raise FileNotFoundError("Model or Vectorizer not found. Please run train.py first.")
-        
-    model = joblib.load(model_path)
-    vectorizer = joblib.load(vectorizer_path)
-    
-    return model, vectorizer
+# --- CACHE: Load model and vectorizer ONCE at module import ---
+_base_dir = Path(__file__).parent.parent
+_model_path = _base_dir / "models" / "best_model.joblib"
+_vectorizer_path = _base_dir / "models" / "vectorizer.joblib"
+
+if not _model_path.exists() or not _vectorizer_path.exists():
+    raise FileNotFoundError("Model or Vectorizer not found. Please run train.py first.")
+
+_model = joblib.load(_model_path)
+_vectorizer = joblib.load(_vectorizer_path)
+print(f"[SpamShield] Model and vectorizer loaded successfully from {_base_dir / 'models'}")
+
 
 def predict_spam(text):
     """
@@ -25,32 +24,28 @@ def predict_spam(text):
         label (str): 'Spam' or 'Ham'
         confidence (float): Probability score percentage
     """
-    from src.preprocess import clean_text
-    
-    model, vectorizer = load_pipeline()
-    
     # Preprocess
     cleaned_text = clean_text(text)
     if not cleaned_text.strip():
         return "Unknown", 0.0
         
     # Vectorize
-    X_test = vectorizer.transform([cleaned_text])
+    X_test = _vectorizer.transform([cleaned_text])
     
     # Predict
-    prediction = model.predict(X_test)[0]
+    prediction = _model.predict(X_test)[0]
     
     # Get probability if available
     try:
-        prob = model.predict_proba(X_test)[0]
+        prob = _model.predict_proba(X_test)[0]
         confidence = prob[prediction] * 100
     except AttributeError:
         # Linear SVM (SGDClassifier without log loss) might not have predict_proba
         # Alternatively, we can use decision_function
         try:
-            decision = model.decision_function(X_test)[0]
+            decision = _model.decision_function(X_test)[0]
             # convert to pseudo-probability
-            confidence = (1 / (1 + __import__('math').exp(-decision))) * 100
+            confidence = (1 / (1 + math.exp(-decision))) * 100
             if prediction == 0:
                 confidence = 100 - confidence
         except:

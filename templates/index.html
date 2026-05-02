@@ -3,98 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SentrySpam | Premium Email AI</title>
-    <meta name="description" content="AI-powered email spam detection with state-of-the-art accuracy.">
+    <title>SpamShield — AI Email Spam Detector</title>
+    <meta name="description" content="Detect spam emails instantly with machine learning. SpamShield uses NLP and trained classifiers for real-time email classification.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="background-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
+    <!-- Noise overlay -->
+    <svg class="noise-overlay" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#noise)" opacity="0.03"/></svg>
 
-    <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-shield-halved"></i>
-                <span>Sentry<span>Spam</span></span>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <svg class="shield-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--accent-teal)" stroke-width="2"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="brand-text">Spam<span class="brand-accent">Shield</span></span>
+            </div>
+            <div class="nav-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Model Active</span>
             </div>
             <div class="nav-links">
-                <a href="#analyze" class="active">Analyze</a>
-                <a href="https://github.com/Seeker023/email-spam-detector" target="_blank">Documentation</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
             </div>
         </div>
     </nav>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1 class="animate-up">Protect Your Inbox with <span class="gradient-text">Intelligence</span></h1>
-                <p class="animate-up delay-1">Leverage state-of-the-art Machine Learning to identify malicious emails in milliseconds. Clean, simple, and powerful.</p>
-                <div class="hero-stats animate-up delay-2">
-                    <div class="stat">
-                        <span class="stat-value">98.5%</span>
-                        <span class="stat-label">Accuracy</span>
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-cards">
+            <div class="float-card float-spam"><span class="chip chip-spam">SPAM</span><span class="float-text">⚠ Suspicious content detected</span></div>
+            <div class="float-card float-ham"><span class="chip chip-ham">HAM ✓</span><span class="float-text">✉ Verified legitimate email</span></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Detect Spam.<br>Protect Your Inbox.</h1>
+            <p class="hero-sub">ML-powered email classification — paste, analyze, and get instant verdicts with confidence scores.</p>
+            <a href="#analyzer" class="scroll-arrow" aria-label="Scroll down">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <section class="stats-bar" id="stats-bar">
+        <div class="stat-card" data-target="10482"><div class="stat-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-teal)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="stat-number" id="stat-emails">0</div><div class="stat-label">Emails Analyzed</div></div>
+        <div class="stat-card" data-target="7291"><div class="stat-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--spam-red)" stroke-width="2"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><div class="stat-number" id="stat-spam">0</div><div class="stat-label">Spam Caught</div></div>
+        <div class="stat-card" data-target="97.4" data-suffix="%"><div class="stat-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ham-green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></div><div class="stat-number" id="stat-acc">0</div><div class="stat-label">Model Accuracy</div></div>
+        <div class="stat-card" data-target="120" data-prefix="<" data-suffix="ms"><div class="stat-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-teal)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-number" id="stat-speed">0</div><div class="stat-label">Avg. Response</div></div>
+    </section>
+
+    <!-- ANALYZER -->
+    <section class="analyzer" id="analyzer">
+        <div class="analyzer-grid">
+            <!-- LEFT: Input -->
+            <div class="input-panel glass-card">
+                <label class="section-label">PASTE EMAIL CONTENT</label>
+                <textarea id="email-text" class="email-textarea" placeholder="Paste your email body here — headers, subject, content..." spellcheck="false"></textarea>
+                <div class="textarea-footer">
+                    <span class="char-count" id="char-count">0 characters</span>
+                </div>
+                <button class="analyze-btn" id="analyze-btn">
+                    <span class="btn-text">Analyze Email</span>
+                    <span class="btn-loader hidden"><span class="spinner"></span>Processing...</span>
+                </button>
+                <p class="privacy-note">🔒 Analysis powered by our trained ML model on the server.</p>
+            </div>
+
+            <!-- RIGHT: Results -->
+            <div class="result-panel glass-card" id="result-panel">
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8" opacity="0.5"/></svg>
+                    <p>Awaiting analysis...</p>
+                </div>
+                <!-- Results (hidden initially) -->
+                <div class="results-content hidden" id="results-content">
+                    <div class="verdict-badge" id="verdict-badge">SPAM</div>
+                    <!-- Confidence Gauge -->
+                    <div class="gauge-wrap">
+                        <svg class="gauge-svg" viewBox="0 0 120 120">
+                            <circle class="gauge-bg" cx="60" cy="60" r="50" fill="none" stroke="var(--border-subtle)" stroke-width="8" stroke-dasharray="236" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+                            <circle class="gauge-fill" id="gauge-fill" cx="60" cy="60" r="50" fill="none" stroke="var(--accent-teal)" stroke-width="8" stroke-linecap="round" stroke-dasharray="236" stroke-dashoffset="236" transform="rotate(-90 60 60)"/>
+                        </svg>
+                        <div class="gauge-label" id="gauge-label">0%</div>
                     </div>
-                    <div class="stat">
-                        <span class="stat-value">< 50ms</span>
-                        <span class="stat-label">Inference</span>
+                    <!-- Probability Bar -->
+                    <div class="prob-bar-wrap">
+                        <div class="prob-label">Spam vs Ham Probability</div>
+                        <div class="prob-bar">
+                            <div class="prob-spam" id="prob-spam" style="width:0%"></div>
+                            <div class="prob-ham" id="prob-ham" style="width:0%"></div>
+                        </div>
+                        <div class="prob-labels"><span id="spam-pct">0%</span><span id="ham-pct">0%</span></div>
+                    </div>
+                    <!-- Flagged Keywords -->
+                    <div class="keywords-section" id="keywords-section">
+                        <div class="keywords-label">Flagged Keywords</div>
+                        <div class="keywords-chips" id="keywords-chips"></div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="analyze" class="analyzer-section">
-            <div class="glass-card analyzer-card animate-up delay-3">
-                <div class="card-header">
-                    <h2><i class="fas fa-magnifying-glass-chart"></i> Email Intelligence Engine</h2>
-                    <p>Paste your email content below for deep neurological analysis.</p>
-                </div>
-                
-                <div class="input-container">
-                    <textarea id="email-text" placeholder="Paste email headers or body here..."></textarea>
-                    <div class="char-count">0 characters</div>
-                </div>
-
-                <div class="actions">
-                    <button id="analyze-btn" class="primary-btn">
-                        <span class="btn-text">Analyze Now</span>
-                        <span class="btn-loader hidden"><i class="fas fa-circle-notch fa-spin"></i></span>
-                    </button>
-                    <button id="clear-btn" class="secondary-btn">Clear</button>
-                </div>
-
-                <div id="result-container" class="result-container hidden">
-                    <div class="result-divider"></div>
-                    <div class="result-content">
-                        <div class="result-icon-wrapper" id="result-icon">
-                            <!-- Icon injected by JS -->
-                        </div>
-                        <div class="result-details">
-                            <h3 id="result-label">Analyzing...</h3>
-                            <div class="progress-bar-wrapper">
-                                <div class="progress-info">
-                                    <span>Confidence Score</span>
-                                    <span id="confidence-value">0%</span>
-                                </div>
-                                <div class="progress-bg">
-                                    <div id="progress-fill" class="progress-fill"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- HOW IT WORKS -->
+    <section class="how-section" id="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-row">
+            <div class="step-card">
+                <div class="step-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="var(--accent-teal)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                <h3>1. Paste Email</h3>
+                <p>Copy any suspicious email content into the analyzer.</p>
             </div>
-        </section>
-    </main>
+            <div class="step-connector"><svg width="40" height="2"><line x1="0" y1="1" x2="40" y2="1" stroke="var(--accent-teal)" stroke-width="2" stroke-dasharray="6,4"/></svg></div>
+            <div class="step-card">
+                <div class="step-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="var(--accent-teal)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                <h3>2. ML Analyzes</h3>
+                <p>NLP preprocessing + TF-IDF + trained classifier in real time.</p>
+            </div>
+            <div class="step-connector"><svg width="40" height="2"><line x1="0" y1="1" x2="40" y2="1" stroke="var(--accent-teal)" stroke-width="2" stroke-dasharray="6,4"/></svg></div>
+            <div class="step-card">
+                <div class="step-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="var(--accent-teal)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                <h3>3. Instant Verdict</h3>
+                <p>Get spam/ham classification with confidence scores.</p>
+            </div>
+        </div>
+    </section>
 
-    <footer>
-        <p>&copy; 2024 SentrySpam AI. Built for Advanced Communication Security.</p>
+    <!-- RECENT TABLE -->
+    <section class="recent-section" id="recent">
+        <h2 class="section-title">Recent Analyses</h2>
+        <div class="table-wrap glass-card">
+            <table class="recent-table">
+                <thead><tr><th>Email Preview</th><th>Verdict</th><th>Confidence</th><th>Time</th></tr></thead>
+                <tbody id="recent-body">
+                    <tr><td class="preview-cell">Congratulations! You've won a $1000 gift card...</td><td><span class="chip chip-spam">SPAM</span></td><td class="mono">98.2%</td><td class="mono">2s ago</td></tr>
+                    <tr><td class="preview-cell">Hi team, please review the attached Q3 report...</td><td><span class="chip chip-ham">HAM</span></td><td class="mono">95.7%</td><td class="mono">15s ago</td></tr>
+                    <tr><td class="preview-cell">URGENT: Your account will be suspended unless...</td><td><span class="chip chip-spam">SPAM</span></td><td class="mono">99.1%</td><td class="mono">32s ago</td></tr>
+                    <tr><td class="preview-cell">Meeting rescheduled to Thursday at 3 PM...</td><td><span class="chip chip-ham">HAM</span></td><td class="mono">91.4%</td><td class="mono">1m ago</td></tr>
+                    <tr><td class="preview-cell">Click here for FREE unlimited data plan offer...</td><td><span class="chip chip-spam">SPAM</span></td><td class="mono">97.8%</td><td class="mono">2m ago</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">Spam<span class="brand-accent">Shield</span> <span class="footer-tagline">— AI-Powered Email Protection</span></div>
+            <div class="footer-mid">Built with scikit-learn · Python · Flask</div>
+            <div class="footer-right"><span class="version-badge">v2.1.0</span> Last trained: Apr 2026</div>
+        </div>
     </footer>
 
     <script src="/static/js/script.js"></script>
