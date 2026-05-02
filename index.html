@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentrySpam | Premium Email AI</title>
+    <meta name="description" content="AI-powered email spam detection with state-of-the-art accuracy.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .background-blobs {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; filter: blur(80px); opacity: 0.5;
+        }
+
+        .blob { position: absolute; border-radius: 50%; }
+        .blob-1 { width: 400px; height: 400px; background: var(--primary); top: -100px; right: -100px; animation: move 20s infinite alternate; }
+        .blob-2 { width: 300px; height: 300px; background: #ec4899; bottom: -50px; left: -50px; animation: move 15s infinite alternate-reverse; }
+
+        @keyframes move {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 100px) scale(1.2); }
+        }
+
+        nav { height: 80px; display: flex; align-items: center; border-bottom: 1px solid var(--glass-border); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1200px; width: 90%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; }
+        .logo i { color: var(--primary); }
+        .logo span span { color: var(--primary); }
+
+        main { max-width: 1200px; width: 90%; margin: 60px auto; }
+        .hero { text-align: center; margin-bottom: 80px; }
+        .hero h1 { font-size: 4rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -2px; }
+        .gradient-text { background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); max-width: 800px; margin: 0 auto; }
+        
+        textarea { width: 100%; height: 200px; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; color: var(--text-main); font-family: inherit; font-size: 1rem; resize: none; margin-bottom: 24px; }
+        
+        .actions { display: flex; gap: 16px; }
+        .primary-btn { background: var(--primary); color: white; border: none; padding: 14px 32px; border-radius: 12px; font-weight: 600; cursor: pointer; flex: 1; transition: var(--transition); }
+        .primary-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        .result-container { margin-top: 30px; padding: 20px; border-radius: 16px; background: rgba(255, 255, 255, 0.03); display: none; }
+        .progress-bg { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; margin-top: 10px; }
+        .progress-fill { height: 100%; width: 0; transition: width 1s; }
+        .bg-spam { background: var(--danger); }
+        .bg-ham { background: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="background-blobs"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+    <nav><div class="nav-container"><div class="logo"><i class="fas fa-shield-halved"></i><span>Sentry<span>Spam</span></span></div></div></nav>
+    <main>
+        <section class="hero"><h1>Protect Your Inbox with <span class="gradient-text">Intelligence</span></h1></section>
+        <div class="glass-card">
+            <textarea id="email-text" placeholder="Paste email content here..."></textarea>
+            <div class="actions">
+                <button id="analyze-btn" class="primary-btn">Analyze Now</button>
+            </div>
+            <div id="result-container" class="result-container">
+                <h3 id="result-label">Result</h3>
+                <div class="progress-bg"><div id="progress-fill" class="progress-fill"></div></div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Note: In a real deployment, this URL would be your Render/HuggingFace URL
+        const API_URL = 'https://cruel-coats-kiss.loca.lt'; 
+
+        document.getElementById('analyze-btn').addEventListener('click', async () => {
+            const text = document.getElementById('email-text').value;
+            const btn = document.getElementById('analyze-btn');
+            const result = document.getElementById('result-container');
+            
+            btn.textContent = 'Analyzing...';
+            
+            try {
+                const response = await fetch(`${API_URL}/analyze`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+                const data = await response.json();
+                
+                result.style.display = 'block';
+                document.getElementById('result-label').textContent = `Result: ${data.label.toUpperCase()} (${data.confidence}%)`;
+                const fill = document.getElementById('progress-fill');
+                fill.className = `progress-fill ${data.label.toLowerCase() === 'spam' ? 'bg-spam' : 'bg-ham'}`;
+                fill.style.width = `${data.confidence}%`;
+            } catch (e) {
+                alert('Connection to AI Engine failed. Make sure your local server and tunnel are running!');
+            } finally {
+                btn.textContent = 'Analyze Now';
+            }
+        });
+    </script>
+</body>
+</html>
